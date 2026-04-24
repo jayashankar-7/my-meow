@@ -1,0 +1,264 @@
+<!Doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For Sindhu 💙</title>
+<style>
+body {
+    margin: 0;
+    font-family: Arial;
+    background: linear-gradient(135deg, #4facfe, #00f2fe);
+    text-align: center;
+    color: white;
+    overflow: hidden;
+}
+
+#lockScreen { margin-top: 150px; }
+
+#intro {
+    display: none;
+    font-size: 50px;
+    margin-top: 40vh;
+    letter-spacing: 5px;
+}
+
+.glow {
+    animation: glow 1s infinite alternate;
+}
+@keyframes glow {
+    from { text-shadow: 0 0 10px #fff; }
+    to { text-shadow: 0 0 25px #00f2fe; }
+}
+
+#mainContent { display: none; margin-top: 60px; }
+
+button {
+    padding: 10px 20px;
+    border-radius: 10px;
+    border: none;
+    background: white;
+    color: #0077ff;
+    cursor: pointer;
+}
+
+#typewriter {
+    margin-top: 20px;
+    font-size: 20px;
+    white-space: pre-line;
+}
+
+.slideshow {
+    width: 250px;
+    height: 250px;
+    margin: auto;
+    margin-top: 20px;
+}
+.slideshow img {
+    width: 100%;
+    height: 100%;
+    border-radius: 15px;
+}
+
+.confetti {
+    position: fixed;
+    width: 10px;
+    height: 10px;
+    top: -10px;
+    animation: fall linear infinite;
+}
+@keyframes fall {
+    to { transform: translateY(100vh) rotate(360deg); }
+}
+
+/* 💙 Modal */
+#finalModal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.6);
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+
+.modalContent {
+    background: white;
+    color: #0077ff;
+    padding: 25px;
+    border-radius: 15px;
+    text-align: center;
+    transform: scale(0.7);
+    opacity: 0;
+    animation: popup 0.5s forwards;
+}
+
+@keyframes popup {
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+</style>
+</head>
+<body>
+<div id="lockScreen">
+    <h2>Enter Password 🔐</h2>
+    <input type="password" id="password" placeholder="Hint: Her Name">
+    <br><br>
+    <button onclick="unlock()">Unlock 💙</button>
+</div>
+<div id="intro"></div>
+<div id="mainContent" style="display:none;">
+    <h1>🎉 Happy Birthday Sindhu 💙🎉</h1>
+    <button onclick="startSurprise()">Start Surprise 🎁</button>
+<div id="typewriter"></div>
+
+<div class="slideshow">
+    <img id="slide" src="photo1.jpg" onerror="this.src='https://via.placeholder.com/250'">
+</div>
+<!-- 💙 Modal -->
+<div id="finalModal">
+    <div class="modalContent">
+        <h2>💙 Happy Birthday Once Again 💙</h2>
+        <p>Sindhu, you mean a lot to me 😊</p>
+        <p>Stay happy always 💫</p>
+        <p><b>— From SHANKAR 💙</b></p>
+        <br>
+        <button onclick="closeModal()">Close</button>
+    </div>
+	
+</div>
+<script>
+function unlock() {
+    let pass = document.getElementById("password").value;
+    if (pass.toLowerCase() === "sindhu") {
+        document.getElementById("lockScreen").style.display = "none";
+        showIntro();
+    } else {
+        alert("Wrong password 😜");
+    }
+}
+
+function showIntro() {
+    let name = "Sindhu 💙";
+    let i = 0;
+    let intro = document.getElementById("intro");
+    intro.style.display = "block";
+
+    let interval = setInterval(() => {
+        intro.innerHTML += name[i];
+        intro.classList.add("glow");
+        i++;
+        if (i >= name.length) {
+            clearInterval(interval);
+            setTimeout(startCountdown, 1500);
+        }
+    }, 200);
+}
+
+function startCountdown() {
+    let count = 3;
+
+    let countdownDiv = document.createElement("div");
+    countdownDiv.id = "countdown";
+    countdownDiv.style.fontSize = "50px";
+    countdownDiv.style.marginTop = "40vh";
+    document.body.appendChild(countdownDiv);
+
+    let interval = setInterval(() => {
+        countdownDiv.innerHTML = count;
+        count--;
+
+        if (count < 0) {
+            clearInterval(interval);
+            countdownDiv.remove(); // remove countdown
+
+            // ✅ Show main content properly
+            document.getElementById("intro").style.display = "none";
+	    document.getElementById("mainContent").style.display = "block";
+        }
+    }, 1000);
+}
+function startSurprise() {
+    let audio = document.getElementById("song");
+
+    if (audio) {
+        audio.play().catch(() => {});
+    }
+
+    createConfetti();
+    startSlideshow();
+    startTyping();
+}
+/* 💌 Typewriter */
+const text = `💙 Happiest Birthday my dear potti senior 💙
+
+You are not just my best friend…
+you are my comfort, my happiness, and my strength.
+
+Every memory with you means so much to me,
+and I’m really lucky to have you in my life.
+
+No matter what happens,
+I’ll always be there for you.
+
+I wish you endless happiness,
+success, and all the love in the world 💙`;
+
+let index = 0;
+
+function startTyping() {
+    function type() {
+        if (index < text.length) {
+            document.getElementById("typewriter").innerHTML += text.charAt(index);
+            index++;
+            setTimeout(type, 40);
+        } else {
+            showModal(); // 💙 show custom modal
+        }
+    }
+    type();
+}
+
+/* 🎉 Confetti */
+function createConfetti() {
+    for (let i = 0; i < 120; i++) {
+        let c = document.createElement("div");
+        c.className = "confetti";
+        c.style.left = Math.random() * window.innerWidth + "px";
+        c.style.backgroundColor = ["#fff","#00f2fe","#4facfe"][Math.floor(Math.random()*3)];
+        c.style.animationDuration = (Math.random()*3+2)+"s";
+        document.body.appendChild(c);
+        setTimeout(()=>c.remove(),5000);
+    }
+}
+
+/* 📸 Slideshow */
+let images = ["photo1.jpg","photo2.jpg","photo3.jpg"];
+let i = 0;
+
+function startSlideshow() {
+    let images = ["photo1.jpg","photo2.jpg","photo3.jpg"];
+    let i = 0;
+
+    let slide = document.getElementById("slide");
+
+    setInterval(() => {
+        i = (i + 1) % images.length;
+        slide.src = images[i];
+    }, 2000);
+}
+/* 💙 Modal functions */
+function showModal() {
+    document.getElementById("finalModal").style.display = "flex";
+}
+
+function closeModal() {
+    document.getElementById("finalModal").style.display = "none";
+}
+</script>
+</body>
+</html>
